@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Tui", "Spectre.Tui\Spectre.Tui.csproj", "{3EC2E779-34AB-4026-801F-86A38FA23D82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{4E26ED9C-CCB9-4FCA-92F1-B712474F0B38}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		.editorconfig = .editorconfig
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Tui.Tests", "Spectre.Tui.Tests\Spectre.Tui.Tests.csproj", "{FABB3FEF-C6DF-44B0-8315-238F8BA27C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Tui.Testing", "Spectre.Tui.Testing\Spectre.Tui.Testing.csproj", "{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EC2E779-34AB-4026-801F-86A38FA23D82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EC2E779-34AB-4026-801F-86A38FA23D82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EC2E779-34AB-4026-801F-86A38FA23D82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EC2E779-34AB-4026-801F-86A38FA23D82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FABB3FEF-C6DF-44B0-8315-238F8BA27C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FABB3FEF-C6DF-44B0-8315-238F8BA27C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FABB3FEF-C6DF-44B0-8315-238F8BA27C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FABB3FEF-C6DF-44B0-8315-238F8BA27C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <PackageReference Include="Spectre.Console"/>
+    </ItemGroup>
+
+    <ItemGroup Label="Package Files">
+        <Content Include="$(MSBuildThisFileDirectory)../../resources/small-logo.png">
+            <Pack>true</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>Properties/Package/small-logo.png</Link>
+        </Content>
+        <Content Include="$(MSBuildThisFileDirectory)../../resources/nuget.md">
+            <Pack>true</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>Properties/Package/nuget.md</Link>
+        </Content>
+    </ItemGroup>
+
+</Project>

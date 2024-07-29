@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <ProjectReference Include="..\Spectre.Tui\Spectre.Tui.csproj"/>
+    </ItemGroup>
+</Project>

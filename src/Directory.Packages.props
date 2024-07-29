@@ -1,0 +1,24 @@
+<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <PackageVersion Include="coverlet.collector" Version="6.0.2"/>
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0"/>
+        <PackageVersion Include="Shouldly" Version="4.2.1"/>
+        <PackageVersion Include="Spectre.Console" Version="0.49.1"/>
+        <PackageVersion Include="xunit" Version="2.9.0"/>
+        <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"/>
+    </ItemGroup>
+
+    <ItemGroup Label="Static Analysis">
+        <PackageVersion Include="MinVer" PrivateAssets="All" Version="5.0.0"/>
+        <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0"/>
+        <PackageVersion Include="Meziantou.Analyzer" PrivateAssets="All" Version="2.0.161"/>
+        <PackageVersion Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.2.0-beta.556"/>
+        <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.12.4"/>
+    </ItemGroup>
+
+</Project>
+  

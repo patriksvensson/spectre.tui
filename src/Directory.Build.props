@@ -1,0 +1,57 @@
+<Project>
+    <PropertyGroup Label="Settings">
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Deterministic>true</Deterministic>
+        <LangVersion>12</LangVersion>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IsPackable>false</IsPackable>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Package Information">
+        <Description>A library that makes it easier to create beautiful TUI applications.</Description>
+        <Copyright>Patrik Svensson</Copyright>
+        <Authors>Patrik Svensson</Authors>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/patriksvensson/spectre.tui</RepositoryUrl>
+        <PackageIcon>small-logo.png</PackageIcon>
+        <PackageReadmeFile>nuget.md</PackageReadmeFile>
+        <PackageTags>console;terminal;tui</PackageTags>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/patriksvensson/spectre.tui</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReleaseNotes>https://github.com/patriksvensson/spectre.tui/releases</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Deterministic Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)/stylecop.json" Link="Properties/stylecop.json"/>
+    </ItemGroup>
+
+    <PropertyGroup Label="Source Link">
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)/Annotations.cs">
+            <Link>Properties/Annotations.cs</Link>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup Label="Package References">
+        <PackageReference Include="MinVer" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
+        <PackageReference Include="Meziantou.Analyzer" PrivateAssets="All"/>
+        <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All"/>
+        <PackageReference Include="Roslynator.Analyzers" PrivateAssets="All"/>
+    </ItemGroup>
+</Project>
