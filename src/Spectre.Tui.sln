@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Tui.Tests", "Spectr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Tui.Testing", "Spectre.Tui.Testing\Spectre.Tui.Testing.csproj", "{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Tui.Example", "Spectre.Tui.Example\Spectre.Tui.Example.csproj", "{4EAAE146-8D9A-4A07-852F-223B1F88163D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +40,11 @@ Global
 		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD4F8EDA-D74C-4CE8-9438-824D28E75C26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EAAE146-8D9A-4A07-852F-223B1F88163D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EAAE146-8D9A-4A07-852F-223B1F88163D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EAAE146-8D9A-4A07-852F-223B1F88163D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EAAE146-8D9A-4A07-852F-223B1F88163D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

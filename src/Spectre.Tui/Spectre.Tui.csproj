@@ -19,5 +19,4 @@
             <Link>Properties/Package/nuget.md</Link>
         </Content>
     </ItemGroup>
-
 </Project>

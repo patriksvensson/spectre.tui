@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
@@ -17,5 +16,4 @@
         <ProjectReference Include="..\Spectre.Tui.Testing\Spectre.Tui.Testing.csproj"/>
         <ProjectReference Include="..\Spectre.Tui\Spectre.Tui.csproj"/>
     </ItemGroup>
-
 </Project>
