@@ -9,7 +9,7 @@ internal sealed class Kernel
         _threads = new List<IKernelThread>();
         _threads.Add(new KeyboardThread(driver, dispatcher));
 
-        if (!OperatingSystem.IsWindows())
+        if (!OperatingSystem.IsWindows() && !Constants.IsDebug)
         {
             _threads.Add(new ResizeSignal(driver, dispatcher));
         }
