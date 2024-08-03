@@ -4,7 +4,7 @@ internal sealed class ResizeThread : KernelThread
 {
     private readonly Driver _driver;
 
-    protected override string Name { get; } = "Resize";
+    public override string Name { get; } = "Resize Thread";
 
     public ResizeThread(Driver driver, IMessageDispatcher dispatcher)
         : base(dispatcher)
@@ -14,7 +14,7 @@ internal sealed class ResizeThread : KernelThread
 
     protected override void Run()
     {
-        var size = new Size(0, 0);
+        var size = _driver.GetTerminalSize();
 
         while (!Stopping.WaitOne(0))
         {

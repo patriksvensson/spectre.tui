@@ -7,7 +7,7 @@ public interface IMessagePoster
     /// Puts a message on the message queue.
     /// </summary>
     /// <param name="message">The message to post.</param>
-    void PostMessage(IMessage message);
+    void PostMessage(Message message);
 }
 
 [PublicAPI]
@@ -18,28 +18,47 @@ internal interface IMessageDispatcher
     /// the message queue.
     /// </summary>
     /// <param name="message">The message to dispatch.</param>
-    void DispatchMessage(IMessage message);
+    void DispatchMessage(Message message);
 }
 
 [PublicAPI]
 public abstract class MessagePump : IMessageDispatcher, IMessagePoster
 {
-    private readonly ConcurrentQueue<IMessage> _queue;
+    private readonly ConcurrentQueue<Message> _queue;
+    private readonly HashSet<Type> _ignored;
     private MessagePump? _parent;
 
     protected MessagePump()
     {
-        _queue = new ConcurrentQueue<IMessage>();
+        _queue = new ConcurrentQueue<Message>();
+        _ignored = new HashSet<Type>();
     }
 
-    public void PostMessage(IMessage message)
+    public void PostMessage(Message message)
     {
+        ArgumentNullException.ThrowIfNull(message);
+
+        if (message.Sender == null)
+        {
+            message.Sender = this;
+        }
+
         _queue.Enqueue(message);
     }
 
-    public void DispatchMessage(IMessage message)
+    public void DispatchMessage(Message message)
     {
-        OnMessage(message);
+        ArgumentNullException.ThrowIfNull(message);
+
+        if (message.Sender == null)
+        {
+            message.Sender = this;
+        }
+
+        if (!_ignored.Contains(message.GetType()))
+        {
+            OnMessage(message);
+        }
 
         if (message.Bubble && _parent != null && message.Sender != _parent)
         {
@@ -47,7 +66,13 @@ public abstract class MessagePump : IMessageDispatcher, IMessagePoster
         }
     }
 
-    protected abstract void OnMessage(IMessage message);
+    protected void IgnoreMessage<T>()
+        where T : Message
+    {
+        _ignored.Add(typeof(T));
+    }
+
+    protected abstract void OnMessage(Message message);
 
     internal void SetParent(MessagePump? parent)
     {

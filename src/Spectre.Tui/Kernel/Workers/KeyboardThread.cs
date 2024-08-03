@@ -4,7 +4,7 @@ internal class KeyboardThread : KernelThread
 {
     private readonly Driver _driver;
 
-    protected override string Name { get; } = "Keyboard";
+    public override string Name { get; } = "Keyboard Thread";
 
     public KeyboardThread(Driver driver, IMessageDispatcher dispatcher)
         : base(dispatcher)

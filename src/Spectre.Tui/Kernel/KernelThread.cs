@@ -7,10 +7,10 @@ internal abstract class KernelThread : IKernelWorker
     private readonly ManualResetEvent _running;
     private readonly ManualResetEvent _stopping;
 
+    public abstract string Name { get; }
     public bool IsRunning => _running.WaitOne(0);
 
     protected WaitHandle Stopping => _stopping;
-    protected abstract string Name { get; }
 
     protected KernelThread(IMessageDispatcher dispatcher)
     {
@@ -51,7 +51,7 @@ internal abstract class KernelThread : IKernelWorker
 
     protected abstract void Run();
 
-    protected void Post(IMessage message)
+    protected void Post(Message message)
     {
         _dispatcher.DispatchMessage(message);
     }

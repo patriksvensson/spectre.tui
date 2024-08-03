@@ -30,6 +30,7 @@ internal sealed class Kernel
     {
         foreach (var thread in _threads)
         {
+            AnsiConsole.MarkupLine($"[green]Starting:[/] {thread.Name}");
             thread.Start();
         }
 
@@ -48,6 +49,7 @@ internal sealed class Kernel
     {
         foreach (var thread in _threads)
         {
+            AnsiConsole.MarkupLine($"[green]Stopping:[/] {thread.Name}");
             thread.Stop();
         }
     }

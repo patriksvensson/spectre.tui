@@ -7,6 +7,7 @@ internal sealed class ResizeSignal : IKernelWorker, IDisposable
     private readonly IMessageDispatcher _dispatcher;
     private PosixSignalRegistration? _signal;
 
+    public string Name { get; } = "Resize Signal";
     public bool IsRunning { get; private set; }
 
     public ResizeSignal(Driver driver, IMessageDispatcher dispatcher)

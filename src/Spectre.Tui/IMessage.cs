@@ -1,20 +1,29 @@
 namespace Spectre.Tui;
 
-[PublicAPI]
-public interface IMessage
+public abstract class Message
 {
-    public bool Bubble => false;
-    public object? Sender => null;
+    public object? Sender { get; internal set; }
+    public virtual bool Bubble => false;
 }
 
 [PublicAPI]
-public struct ResizeEvent : IMessage
+public sealed class ResizeEvent : Message
 {
     public required Size Size { get; init; }
 }
 
 [PublicAPI]
-public struct KeyDownEvent : IMessage
+public sealed class KeyDownEvent : Message
 {
     public required ConsoleKeyInfo Key { get; init; }
+}
+
+[PublicAPI]
+public sealed class StartedEvent : Message
+{
+}
+
+[PublicAPI]
+public sealed class MountedEvent : Message
+{
 }

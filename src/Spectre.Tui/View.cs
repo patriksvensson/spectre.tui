@@ -8,23 +8,39 @@ namespace Spectre.Tui;
 [PublicAPI]
 public abstract class View : MessagePump
 {
-    internal void ForwardMessage(IMessage message)
+    // Doesn't really do anything at this point
+    public abstract void Mount();
+
+    internal void ForwardMessage(Message message)
     {
-        OnMessage(message);
+        DispatchMessage(message);
     }
 }
 
 internal sealed class LayoutView : View
 {
-    protected override void OnMessage(IMessage message)
+    public LayoutView()
+    {
+        IgnoreMessage<StartedEvent>();
+    }
+
+    protected override void OnMessage(Message message)
     {
         if (message is KeyDownEvent keyDown)
         {
-            AnsiConsole.WriteLine($"KeyDown: {keyDown.Key.KeyChar}");
+            AnsiConsole.MarkupLine($"[yellow]KeyDown:[/] {keyDown.Key.KeyChar}");
         }
         else if (message is ResizeEvent resize)
         {
-            AnsiConsole.WriteLine($"Resize: {resize.Size.Width}, {resize.Size.Height}");
+            AnsiConsole.MarkupLine($"[yellow]Resize:[/] {resize.Size.Width}, {resize.Size.Height}");
         }
+        else
+        {
+            AnsiConsole.MarkupLine($"[yellow]Event:[/] {message.GetType().Name}");
+        }
+    }
+
+    public override void Mount()
+    {
     }
 }
