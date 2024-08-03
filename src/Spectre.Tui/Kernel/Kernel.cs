@@ -2,21 +2,13 @@ namespace Spectre.Tui;
 
 internal sealed class Kernel
 {
-    private readonly List<IKernelThread> _threads;
+    private readonly List<IKernelWorker> _threads;
 
     public Kernel(Driver driver, IMessageDispatcher dispatcher)
     {
-        _threads = new List<IKernelThread>();
+        _threads = new List<IKernelWorker>();
         _threads.Add(new KeyboardThread(driver, dispatcher));
-
-        if (!OperatingSystem.IsWindows() && !Constants.IsDebug)
-        {
-            _threads.Add(new ResizeSignal(driver, dispatcher));
-        }
-        else
-        {
-            _threads.Add(new ResizeThread(driver, dispatcher));
-        }
+        _threads.AddRange(driver.GetWorker(dispatcher));
     }
 
     private sealed class Scope : IDisposable

@@ -1,21 +1,20 @@
 namespace Spectre.Tui;
 
-public abstract class Driver
+internal class Driver
 {
-    public abstract Size GetTerminalSize();
-    public abstract ConsoleKeyInfo? GetPressedKey();
-}
+    public virtual IEnumerable<IKernelWorker> GetWorker(IMessageDispatcher dispatcher)
+    {
+        yield return new ResizeThread(this, dispatcher);
+    }
 
-public sealed class DefaultDriver : Driver
-{
-    public override Size GetTerminalSize()
+    public virtual Size GetTerminalSize()
     {
         return new Size(
             System.Console.WindowWidth,
             System.Console.WindowHeight);
     }
 
-    public override ConsoleKeyInfo? GetPressedKey()
+    public virtual ConsoleKeyInfo? GetPressedKey()
     {
         if (System.Console.KeyAvailable)
         {
@@ -23,5 +22,30 @@ public sealed class DefaultDriver : Driver
         }
 
         return null;
+    }
+
+    public static Driver Create()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            return new Driver();
+        }
+        else
+        {
+            return new LinuxDriver();
+        }
+    }
+}
+
+[UnsupportedOSPlatform("windows")]
+internal sealed class LinuxDriver : Driver
+{
+    public override IEnumerable<IKernelWorker> GetWorker(IMessageDispatcher dispatcher)
+    {
+#if RELEASE
+        yield return new ResizeSignal(this, dispatcher);
+#else
+        return base.GetWorker(dispatcher);
+#endif
     }
 }

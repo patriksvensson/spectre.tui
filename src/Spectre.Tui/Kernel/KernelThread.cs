@@ -1,13 +1,6 @@
 namespace Spectre.Tui;
 
-internal interface IKernelThread
-{
-    bool IsRunning { get; }
-    void Start();
-    void Stop();
-}
-
-internal abstract class KernelThread : IKernelThread
+internal abstract class KernelThread : IKernelWorker
 {
     private readonly IMessageDispatcher _dispatcher;
     private readonly Thread _thread;

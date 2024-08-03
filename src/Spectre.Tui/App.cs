@@ -23,7 +23,7 @@ public abstract class App : MessagePump
 
     public async Task Run(CancellationToken cancellationToken)
     {
-        var driver = new DefaultDriver();
+        var driver = Driver.Create();
         var kernel = new Kernel(driver, this);
         using (kernel.Start())
         {
