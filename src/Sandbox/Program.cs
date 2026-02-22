@@ -36,7 +36,7 @@ public static class Program
                 new ToDoItem("Believe it or not, a list item"),
                 new ToDoItem("A list item (wow)")
             ])
-            .HighlightSymbol("→")
+            .HighlightSymbol("→ ")
             .WrapAround()
             .SelectedIndex(0);
 
@@ -72,13 +72,16 @@ public static class Program
 
                 // Inner box
                 var inner = middle.Inflate(new Size(-12, -5));
-                ctx.Render(new BoxWidget(Color.Green), inner);
+                ctx.Render(new BoxWidget(Color.Green)
+                {
+                    Border = Border.McGuganTall,
+                }, inner);
                 ctx.Render(
                     new ClearWidget(' ', new Style(decoration: Decoration.Bold)),
                     inner.Inflate(-1, -1));
 
                 // To-Do list
-                ctx.Render(todo, inner.Inflate(-1, -1));
+                ctx.Render(todo, inner.Inflate(-2, -2));
 
                 // Help
                 ctx.Render(Text.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select", new Style(Color.Gray)), bottom);
