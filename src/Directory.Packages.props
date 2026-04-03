@@ -3,17 +3,17 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="10.0.102" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="10.0.201" />
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="7.0.0" />
     <PackageVersion Include="Polyfill" Version="8.9.0" />
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.15.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="Spectre.Console.Ansi" Version="0.54.1-alpha.0.37" />
+    <PackageVersion Include="Spectre.Console.Ansi" Version="0.55.0" />
     <PackageVersion Include="Spectre.Verify.Extensions" Version="28.16.0" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
-    <PackageVersion Include="Verify.Xunit" Version="31.9.4" />
+    <PackageVersion Include="Verify.Xunit" Version="31.12.5" />
     <PackageVersion Include="Wcwidth.Sources" Version="4.0.2-preview.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
