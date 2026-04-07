@@ -83,18 +83,7 @@ public sealed class Renderer
             _terminal.Write(cell);
         }
 
-        // Flush the backend
-        _terminal.Flush();
-
-        // Set (or hide) the cursor position.
-        ShowOrHideCursor(frame);
-
-        // Swap the buffers
-        SwapBuffers();
-    }
-
-    private void ShowOrHideCursor(RenderContext frame)
-    {
+        // Show/Hide cursor
         if (frame.CursorPosition == null)
         {
             _terminal.HideCursor();
@@ -105,7 +94,11 @@ public sealed class Renderer
             _terminal.ShowCursor();
         }
 
+        // Flush the backend
         _terminal.Flush();
+
+        // Swap the buffers
+        SwapBuffers();
     }
 
     private bool ResizeIfNeeded()
