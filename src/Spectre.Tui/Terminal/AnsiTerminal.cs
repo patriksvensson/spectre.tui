@@ -66,7 +66,7 @@ public abstract class AnsiTerminal : ITerminal
 
     public virtual void SetCursorPosition(Position position)
     {
-        _writer.CursorPosition(position.X, position.Y);
+        _writer.CursorPosition(position.Y + 1, position.X + 1);
     }
 
     public void Clear()
