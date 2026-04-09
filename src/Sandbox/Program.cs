@@ -42,7 +42,7 @@ public static class Program
 
         while (running)
         {
-            renderer.Draw((ctx, elapsed) =>
+            renderer.Draw((ctx, info) =>
             {
                 var layout = new Layout("Root")
                     .SplitRows(
@@ -56,7 +56,7 @@ public static class Program
 
                 // FPS
                 ctx.Render(
-                    new FpsWidget(elapsed, foreground: Color.Green),
+                    new FpsWidget(info.Fps, foreground: Color.Green),
                     top);
 
                 // Outer box
@@ -67,7 +67,7 @@ public static class Program
                 ctx.Render(new ClearWidget('╱', Color.Gray), middle.Inflate(-1, -1));
 
                 // Ball
-                ball.Update(elapsed, middle.Inflate(-1, -1));
+                ball.Update(info.FrameTime, middle.Inflate(-1, -1));
                 ctx.Render(new BallWidget(), ball);
 
                 // Inner box
@@ -82,8 +82,6 @@ public static class Program
 
                 // To-Do list
                 ctx.Render(todo, inner.Inflate(-2, -2));
-
-                ctx.SetCursorPosition(new Position(10, 10));
 
                 // Help
                 ctx.Render(Text.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select", new Style(Color.Gray)), bottom);

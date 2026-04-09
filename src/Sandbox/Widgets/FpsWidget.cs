@@ -5,12 +5,10 @@ public sealed class FpsWidget : IWidget
     private readonly Text _text;
 
     public FpsWidget(
-        TimeSpan elapsed,
+        double fps,
         Color? foreground = null,
         Color? background = null)
     {
-        var fps = TimeSpan.FromSeconds(1) / elapsed;
-
         _text = Text.FromMarkup(
             $"[yellow]FPS:[/] {fps:0.000}",
             new Style

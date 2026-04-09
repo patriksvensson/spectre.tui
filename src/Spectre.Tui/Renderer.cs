@@ -38,7 +38,7 @@ public sealed class Renderer
         _targetFps.Target = TimeSpan.FromSeconds(1) / fps;
     }
 
-    public void Draw(Action<RenderContext, TimeSpan> callback)
+    public void Draw(Action<RenderContext, FrameInfo> callback)
     {
         // Calculate the time since last update
         var elapsed = _stopwatch.Elapsed - _lastUpdate;
@@ -61,7 +61,7 @@ public sealed class Renderer
 
         // Fill out the current frame
         var frame = new RenderContext(null, _buffers[_bufferIndex], _buffers[1 - _bufferIndex], _viewport, _viewport);
-        callback(frame, elapsedSinceLastRender);
+        callback(frame, new FrameInfo(elapsedSinceLastRender, _stopwatch.Elapsed));
 
         // Calculate the diff between the back and front buffer
         var prev = _buffers[1 - _bufferIndex];
