@@ -90,8 +90,7 @@ public sealed class Renderer
         }
         else
         {
-            _terminal.SetCursorPosition(frame.CursorPosition.Value);
-            _terminal.ShowCursor();
+            _terminal.ShowCursor(frame.CursorPosition.Value);
         }
 
         // Flush the backend

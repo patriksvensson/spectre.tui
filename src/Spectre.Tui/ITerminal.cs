@@ -10,6 +10,5 @@ public interface ITerminal : IDisposable
     void Flush();
 
     void HideCursor();
-    void ShowCursor();
-    void SetCursorPosition(Position position);
+    void ShowCursor(Position? position);
 }

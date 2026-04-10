@@ -106,11 +106,12 @@ public static class RenderContextExtensions
             foreach (var (symbol, width) in graphemes)
             {
                 context.GetCell(x, y)?.SetSymbol(symbol).SetStyle(style);
-                var next = x + width;
+
+                var nextSymbolPosition = x + width;
                 x++;
 
                 // Reset the next following cells
-                while (x < next)
+                while (x < nextSymbolPosition)
                 {
                     context.GetCell(x, y)?.SetSymbol("");
                     x++;

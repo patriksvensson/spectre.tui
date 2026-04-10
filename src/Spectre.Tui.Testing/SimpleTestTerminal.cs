@@ -55,11 +55,7 @@ public sealed class SimpleTestTerminal : ITestTerminal
     {
     }
 
-    public void ShowCursor()
-    {
-    }
-
-    public void SetCursorPosition(Position position)
+    public void ShowCursor(Position? position)
     {
     }
 
