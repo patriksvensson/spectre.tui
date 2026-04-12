@@ -105,15 +105,9 @@ public static class TextExtensions
 {
     extension(Text)
     {
-        public static Text FromMarkup(string text, Style? style = null)
+        public static Text From(string text, Style? appearance = null)
         {
-            var result = new Text();
-            foreach (var line in AnsiMarkup.Parse(text, style))
-            {
-                result.Append(line.Text, line.Style);
-            }
-
-            return result;
+            return Text.FromString(text, appearance);
         }
 
         public static Text FromString(string text, Style? appearance = null)
@@ -123,6 +117,17 @@ public static class TextExtensions
             {
                 Style = appearance
             };
+        }
+
+        public static Text FromMarkup(string text, Style? style = null)
+        {
+            var result = new Text();
+            foreach (var line in AnsiMarkup.Parse(text, style))
+            {
+                result.Append(line.Text, line.Style);
+            }
+
+            return result;
         }
     }
 }

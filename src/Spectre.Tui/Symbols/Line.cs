@@ -70,7 +70,7 @@ public sealed class Line
         public const char OneEightRight = '▕';
     }
 
-    public static Line Plain { get; } = new Line
+    public static Line Plain { get; } = new()
     {
         Vertical = Symbols.Vertical,
         Horizontal = Symbols.Horizontal,
@@ -85,7 +85,7 @@ public sealed class Line
         Cross = Symbols.Cross,
     };
 
-    public static Line Rounded { get; } = new Line
+    public static Line Rounded { get; } = new()
     {
         Vertical = Symbols.Vertical,
         Horizontal = Symbols.Horizontal,
@@ -100,7 +100,7 @@ public sealed class Line
         Cross = Symbols.Cross,
     };
 
-    public static Line Double { get; } = new Line
+    public static Line Double { get; } = new()
     {
         Vertical = Symbols.DoubleVertical,
         Horizontal = Symbols.DoubleHorizontal,
@@ -115,7 +115,7 @@ public sealed class Line
         Cross = Symbols.DoubleCross,
     };
 
-    public static Line Bold { get; } = new Line
+    public static Line Bold { get; } = new()
     {
         Vertical = Symbols.BoldVertical,
         Horizontal = Symbols.BoldHorizontal,

@@ -11,27 +11,29 @@ public sealed class Border
     public required char HorizontalTop { get; init; }
     public required char HorizontalBottom { get; init; }
 
-    public static Border FromLine(Line line)
+    public Border()
     {
-        return new Border
-        {
-            TopLeft = line.TopLeft,
-            TopRight = line.TopRight,
-            BottomLeft = line.BottomLeft,
-            BottomRight = line.BottomRight,
-            VerticalLeft = line.Vertical,
-            VerticalRight = line.Vertical,
-            HorizontalTop = line.Horizontal,
-            HorizontalBottom = line.Horizontal,
-        };
     }
 
-    public static Border Plain { get; } = FromLine(Line.Plain);
-    public static Border Rounded { get; } = FromLine(Line.Rounded);
-    public static Border Double { get; } = FromLine(Line.Double);
-    public static Border Bold { get; } = FromLine(Line.Bold);
+    [SetsRequiredMembers]
+    public Border(Line line)
+    {
+        TopLeft = line.TopLeft;
+        TopRight = line.TopRight;
+        BottomLeft = line.BottomLeft;
+        BottomRight = line.BottomRight;
+        VerticalLeft = line.Vertical;
+        VerticalRight = line.Vertical;
+        HorizontalTop = line.Horizontal;
+        HorizontalBottom = line.Horizontal;
+    }
 
-    public static Border McGuganWide { get; } = new Border
+    public static Border Plain { get; } = new(Line.Plain);
+    public static Border Rounded { get; } = new(Line.Rounded);
+    public static Border Double { get; } = new(Line.Double);
+    public static Border Bold { get; } = new(Line.Bold);
+
+    public static Border McGuganWide { get; } = new()
     {
         TopLeft = Line.Symbols.OneEightBottom,
         TopRight = Line.Symbols.OneEightBottom,
@@ -43,7 +45,7 @@ public sealed class Border
         HorizontalBottom = Line.Symbols.OneEightTop,
     };
 
-    public static Border McGuganTall { get; } = new Border
+    public static Border McGuganTall { get; } = new()
     {
         TopLeft = Line.Symbols.OneEightRight,
         TopRight = Line.Symbols.OneEightLeft,
