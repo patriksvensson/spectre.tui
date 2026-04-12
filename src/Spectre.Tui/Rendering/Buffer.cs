@@ -6,7 +6,7 @@ internal interface IReadOnlyBuffer
 }
 
 [DebuggerDisplay("{DebuggerDisplay(),nq}")]
-internal sealed class Buffer : IReadOnlyBuffer
+internal sealed class Buffer : IReadOnlyBuffer, IBuffer
 {
     private Rectangle _screen;
     private Cell[] _cells;

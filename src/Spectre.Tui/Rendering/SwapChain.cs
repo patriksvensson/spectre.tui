@@ -1,12 +1,12 @@
 namespace Spectre.Tui;
 
-internal sealed class SwapChain : IDoubleBuffer
+internal sealed class SwapChain
 {
     private readonly Buffer[] _buffers;
     private int _bufferIndex;
 
-    public Buffer Front => _buffers[_bufferIndex];
-    public Buffer Back => _buffers[1 - _bufferIndex];
+    public Buffer Current => _buffers[_bufferIndex];
+    public Buffer Previous => _buffers[1 - _bufferIndex];
 
     public SwapChain(Rectangle size)
     {
@@ -19,21 +19,21 @@ internal sealed class SwapChain : IDoubleBuffer
 
     public IEnumerable<(int x, int y, Cell)> Diff()
     {
-        return Back.Diff(Front);
+        return Previous.Diff(Current);
     }
 
     public void Resize(Rectangle screen)
     {
-        Front.Resize(screen);
-        Back.Resize(screen);
+        Current.Resize(screen);
+        Previous.Resize(screen);
 
-        // Reset the back buffer so next diff is clean
-        Back.Reset();
+        // Reset the back buffer
+        Previous.Reset();
     }
 
     public void Swap()
     {
-        Back.Reset();
+        Previous.Reset();
         _bufferIndex = 1 - _bufferIndex;
     }
 }

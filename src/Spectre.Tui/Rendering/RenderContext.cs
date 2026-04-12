@@ -3,12 +3,13 @@ namespace Spectre.Tui;
 [PublicAPI]
 public sealed record RenderContext
 {
-    private readonly IDoubleBuffer _buffer;
+    private readonly IBuffer _buffer;
 
     public Rectangle Screen { get; internal init; }
     public Rectangle Viewport { get; internal init; }
 
     internal RenderContext? Parent { get; init; }
+
     internal Position? CursorPosition
     {
         get
@@ -27,7 +28,7 @@ public sealed record RenderContext
         }
     }
 
-    internal RenderContext(IDoubleBuffer buffer, Rectangle screen)
+    internal RenderContext(IBuffer buffer, Rectangle screen)
     {
         _buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
 
@@ -38,12 +39,7 @@ public sealed record RenderContext
 
     public Cell? GetCell(int x, int y)
     {
-        return _buffer.Front.GetCell(Screen.X + x, Screen.Y + y);
-    }
-
-    public IReadOnlyCell? GetCellFromPreviousFrame(int x, int y)
-    {
-        return _buffer.Back.GetCell(Screen.X + x, Screen.Y + y);
+        return _buffer.GetCell(Screen.X + x, Screen.Y + y);
     }
 }
 
@@ -76,6 +72,11 @@ public static class RenderContextExtensions
             {
                 widget.Render(areaContext, state);
             }
+        }
+
+        public Position SetString(Position position, string text, Style? style = null, int? maxWidth = null)
+        {
+            return context.SetString(position.X, position.Y, text, style, maxWidth);
         }
 
         public Position SetString(int x, int y, string text, Style? style = null, int? maxWidth = null)
@@ -119,6 +120,11 @@ public static class RenderContextExtensions
             return new Position(x, y);
         }
 
+        public Position SetLine(Position position, TextLine line, int maxWidth)
+        {
+            return context.SetLine(position.X, position.Y, line, maxWidth);
+        }
+
         public Position SetLine(int x, int y, TextLine line, int maxWidth)
         {
             var remainingWidth = maxWidth;
@@ -143,9 +149,19 @@ public static class RenderContextExtensions
             return new Position(x, y);
         }
 
+        public Position SetSpan(Position position, TextSpan span, int maxWidth)
+        {
+            return context.SetSpan(position.X, position.Y, span, maxWidth);
+        }
+
         public Position SetSpan(int x, int y, TextSpan span, int maxWidth)
         {
             return context.SetString(x, y, span.Text, span.Style, maxWidth);
+        }
+
+        public void SetSymbol(Position position, char symbol)
+        {
+            context.SetSymbol(position.X, position.Y, symbol);
         }
 
         public void SetSymbol(int x, int y, char symbol)
@@ -153,9 +169,19 @@ public static class RenderContextExtensions
             context.GetCell(x, y)?.SetSymbol(symbol);
         }
 
+        public void SetSymbol(Position position, Rune symbol)
+        {
+            context.SetSymbol(position.X, position.Y, symbol);
+        }
+
         public void SetSymbol(int x, int y, Rune symbol)
         {
             context.GetCell(x, y)?.SetSymbol(symbol);
+        }
+
+        public void SetStyle(Position position, Style? style)
+        {
+            context.SetStyle(position.X, position.Y, style);
         }
 
         public void SetStyle(int x, int y, Style? style)
@@ -180,9 +206,19 @@ public static class RenderContextExtensions
             }
         }
 
+        public void SetForeground(Position position, Color? color)
+        {
+            context.SetForeground(position.X, position.Y, color);
+        }
+
         public void SetForeground(int x, int y, Color? color)
         {
             context.GetCell(x, y)?.SetForeground(color);
+        }
+
+        public void SetBackground(Position position, Color? color)
+        {
+            context.SetBackground(position.X, position.Y, color);
         }
 
         public void SetBackground(int x, int y, Color? color)
@@ -192,7 +228,27 @@ public static class RenderContextExtensions
 
         public void SetCursorPosition(Position position)
         {
-            context.CursorPosition = position;
+            context.SetCursorPosition(position.X, position.Y);
+        }
+
+        public void SetCursorPosition(int x, int y)
+        {
+            context.CursorPosition = new Position(x, y);
+        }
+
+        public void Blit(Position position, RenderSurface surface)
+        {
+            context.Blit(position.X, position.Y, surface);
+        }
+
+        public void Blit(int x, int y, RenderSurface surface)
+        {
+            foreach (var (sourcePosition, source) in surface.GetCells())
+            {
+                context.GetCell(x + sourcePosition.X, y + sourcePosition.Y)?
+                    .SetSymbol(source.Symbol)
+                    .SetStyle(source.Style);
+            }
         }
 
         private bool CreateAreaRenderContext(Rectangle area, [NotNullWhen(true)] out RenderContext? result)

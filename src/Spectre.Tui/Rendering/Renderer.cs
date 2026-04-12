@@ -60,7 +60,7 @@ public sealed class Renderer
         _lastRender = _stopwatch.Elapsed;
 
         // Fill out the current frame
-        var frame = new RenderContext(_swapChain, _viewport);
+        var frame = new RenderContext(_swapChain.Current, _viewport);
         callback(frame, new FrameInfo(elapsedSinceLastRender, _stopwatch.Elapsed, _lastCellsChanged));
 
         // Calculate the diff between the back and front buffer

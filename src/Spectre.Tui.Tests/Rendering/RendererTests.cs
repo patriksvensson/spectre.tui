@@ -61,4 +61,30 @@ public sealed class RendererTests
             •••••••••••
             """);
     }
+
+    [Fact]
+    public void Should_Blit_Surface_At_Given_Position()
+    {
+        // Given
+        var fixture = new TuiFixture(new Size(11, 3));
+        var surface = new RenderSurface();
+        surface.Render(ctx =>
+        {
+            ctx.Render(new TestTextWidget(0, 0, "Hello"));
+        });
+
+        // When
+        var result = fixture.Render(frame =>
+        {
+            frame.Blit(new Position(3, 1), surface);
+        });
+
+        // Then
+        result.ShouldBe(
+            """
+            •••••••••••
+            •••Hello•••
+            •••••••••••
+            """);
+    }
 }
