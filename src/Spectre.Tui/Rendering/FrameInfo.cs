@@ -20,10 +20,16 @@ public readonly record struct FrameInfo
     /// </summary>
     public double Fps { get; }
 
-    public FrameInfo(TimeSpan frameTime, TimeSpan elapsed)
+    /// <summary>
+    /// Gets the number of cells that changed since the previous frame.
+    /// </summary>
+    public int DiffCount { get; }
+
+    public FrameInfo(TimeSpan frameTime, TimeSpan elapsed, int diffCount)
     {
         FrameTime = frameTime;
         Elapsed = elapsed;
+        DiffCount = diffCount;
         Fps = TimeSpan.FromSeconds(1) / FrameTime;
     }
 }

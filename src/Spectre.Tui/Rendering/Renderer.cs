@@ -11,6 +11,7 @@ public sealed class Renderer
     private TimeSpan _lastUpdate;
     private TimeSpan _lastRender;
     private Rectangle _viewport;
+    private int _lastCellsChanged;
 
     public Renderer(ITerminal terminal)
     {
@@ -20,6 +21,7 @@ public sealed class Renderer
         _viewport = _terminal.GetSize().ToRectangle();
         _swapChain = new SwapChain(_viewport);
         _lastUpdate = TimeSpan.Zero;
+        _lastCellsChanged = 0;
 
         _stopwatch.Start();
     }
@@ -59,13 +61,16 @@ public sealed class Renderer
 
         // Fill out the current frame
         var frame = new RenderContext(_swapChain, _viewport);
-        callback(frame, new FrameInfo(elapsedSinceLastRender, _stopwatch.Elapsed));
+        callback(frame, new FrameInfo(elapsedSinceLastRender, _stopwatch.Elapsed, _lastCellsChanged));
 
         // Calculate the diff between the back and front buffer
         // and render it to the terminal buffer
         var lastPosition = default(Position?);
+        var cellsChanged = 0;
         foreach (var (x, y, cell) in _swapChain.Diff())
         {
+            cellsChanged++;
+
             // Do we need to move within the buffer?
             var movedForward = lastPosition != null && x == lastPosition.Value.X + 1 && y == lastPosition.Value.Y;
             if (!movedForward)
@@ -76,6 +81,9 @@ public sealed class Renderer
             lastPosition = new Position(x, y);
             _terminal.Write(cell);
         }
+
+        // Update the cell diff
+        _lastCellsChanged = cellsChanged;
 
         // Show/Hide cursor
         if (frame.CursorPosition == null)
