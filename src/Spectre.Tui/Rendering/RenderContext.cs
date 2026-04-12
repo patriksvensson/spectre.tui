@@ -3,8 +3,7 @@ namespace Spectre.Tui;
 [PublicAPI]
 public sealed record RenderContext
 {
-    private readonly Buffer _buffer;
-    private readonly IReadOnlyBuffer _previousBuffer;
+    private readonly IDoubleBuffer _buffer;
 
     public Rectangle Screen { get; internal init; }
     public Rectangle Viewport { get; internal init; }
@@ -28,12 +27,9 @@ public sealed record RenderContext
         }
     }
 
-    internal RenderContext(SwapChain swapChain, Rectangle screen)
+    internal RenderContext(IDoubleBuffer buffer, Rectangle screen)
     {
-        ArgumentNullException.ThrowIfNull(swapChain);
-
-        _buffer = swapChain.Front;
-        _previousBuffer = swapChain.Back;
+        _buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
 
         Parent = null;
         Screen = screen;
@@ -42,17 +38,12 @@ public sealed record RenderContext
 
     public Cell? GetCell(int x, int y)
     {
-        return _buffer.GetCell(Screen.X + x, Screen.Y + y);
+        return _buffer.Front.GetCell(Screen.X + x, Screen.Y + y);
     }
 
     public IReadOnlyCell? GetCellFromPreviousFrame(int x, int y)
     {
-        return _previousBuffer.GetCell(Screen.X + x, Screen.Y + y);
-    }
-
-    public void Invalidate()
-    {
-        _buffer.Resize(Screen);
+        return _buffer.Back.GetCell(Screen.X + x, Screen.Y + y);
     }
 }
 

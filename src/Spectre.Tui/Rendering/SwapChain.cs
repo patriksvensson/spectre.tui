@@ -1,6 +1,6 @@
 namespace Spectre.Tui;
 
-internal sealed class SwapChain
+internal sealed class SwapChain : IDoubleBuffer
 {
     private readonly Buffer[] _buffers;
     private int _bufferIndex;
