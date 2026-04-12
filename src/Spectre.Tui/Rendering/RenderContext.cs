@@ -28,17 +28,16 @@ public sealed record RenderContext
         }
     }
 
-    internal RenderContext(
-        RenderContext? parent,
-        Buffer current, Buffer previous,
-        Rectangle screen, Rectangle viewport)
+    internal RenderContext(SwapChain swapChain, Rectangle screen)
     {
-        _buffer = current ?? throw new ArgumentNullException(nameof(current));
-        _previousBuffer = previous ?? throw new ArgumentNullException(nameof(previous));
+        ArgumentNullException.ThrowIfNull(swapChain);
 
-        Parent = parent;
+        _buffer = swapChain.Front;
+        _previousBuffer = swapChain.Back;
+
+        Parent = null;
         Screen = screen;
-        Viewport = viewport;
+        Viewport = screen;
     }
 
     public Cell? GetCell(int x, int y)

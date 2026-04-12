@@ -5,26 +5,22 @@ public sealed class Renderer
 {
     private readonly ITerminal _terminal;
     private readonly Stopwatch _stopwatch;
-    private readonly Buffer[] _buffers;
+    private readonly TargetFps _targetFps;
+    private readonly SwapChain _swapChain;
+
     private TimeSpan _lastUpdate;
     private TimeSpan _lastRender;
-    private int _bufferIndex;
     private Rectangle _viewport;
-    private readonly TargetFps _targetFps;
 
     public Renderer(ITerminal terminal)
     {
         _terminal = terminal ?? throw new ArgumentNullException(nameof(terminal));
-        _lastUpdate = TimeSpan.Zero;
-        _viewport = _terminal.GetSize().ToRectangle();
-        _targetFps = new TargetFps();
-        _buffers =
-        [
-            Buffer.Empty(_viewport),
-            Buffer.Empty(_viewport),
-        ];
-
         _stopwatch = new Stopwatch();
+        _targetFps = new TargetFps();
+        _viewport = _terminal.GetSize().ToRectangle();
+        _swapChain = new SwapChain(_viewport);
+        _lastUpdate = TimeSpan.Zero;
+
         _stopwatch.Start();
     }
 
@@ -38,6 +34,11 @@ public sealed class Renderer
         _targetFps.Target = TimeSpan.FromSeconds(1) / fps;
     }
 
+    public void NoTargetFps()
+    {
+        _targetFps.Target = null;
+    }
+
     public void Draw(Action<RenderContext, FrameInfo> callback)
     {
         // Calculate the time since last update
@@ -47,12 +48,9 @@ public sealed class Renderer
         var wasResized = ResizeIfNeeded();
 
         // Should we skip rendering?
-        if (!_targetFps.ShouldRedraw(elapsed))
+        if (!_targetFps.ShouldRedraw(elapsed) && !wasResized)
         {
-            if (!wasResized)
-            {
-                return;
-            }
+            return;
         }
 
         // Calculate the time since last render
@@ -60,17 +58,13 @@ public sealed class Renderer
         _lastRender = _stopwatch.Elapsed;
 
         // Fill out the current frame
-        var frame = new RenderContext(null, _buffers[_bufferIndex], _buffers[1 - _bufferIndex], _viewport, _viewport);
+        var frame = new RenderContext(_swapChain, _viewport);
         callback(frame, new FrameInfo(elapsedSinceLastRender, _stopwatch.Elapsed));
 
         // Calculate the diff between the back and front buffer
-        var prev = _buffers[1 - _bufferIndex];
-        var curr = _buffers[_bufferIndex];
-        var diff = prev.Diff(curr);
-
-        // Render the current frame
+        // and render it to the terminal buffer
         var lastPosition = default(Position?);
-        foreach (var (x, y, cell) in diff)
+        foreach (var (x, y, cell) in _swapChain.Diff())
         {
             // Do we need to move within the buffer?
             var movedForward = lastPosition != null && x == lastPosition.Value.X + 1 && y == lastPosition.Value.Y;
@@ -93,11 +87,8 @@ public sealed class Renderer
             _terminal.ShowCursor(frame.CursorPosition.Value);
         }
 
-        // Flush the backend
         _terminal.Flush();
-
-        // Swap the buffers
-        SwapBuffers();
+        _swapChain.Swap();
     }
 
     private bool ResizeIfNeeded()
@@ -108,58 +99,13 @@ public sealed class Renderer
             return false;
         }
 
-        // Reset buffer
-        _buffers[_bufferIndex].Resize(area);
-        _buffers[1 - _bufferIndex].Resize(area);
+        _swapChain.Resize(area);
         _viewport = area;
 
         // Clear the terminal
         _terminal.Clear();
 
-        // Reset the back buffer
-        _buffers[1 - _bufferIndex].Reset();
-
         // We resized
         return true;
-    }
-
-    private void SwapBuffers()
-    {
-        _buffers[1 - _bufferIndex].Reset();
-        _bufferIndex = 1 - _bufferIndex;
-    }
-}
-
-internal sealed class TargetFps
-{
-    public TimeSpan Accumulated { get; private set; }
-
-    public TimeSpan? Target
-    {
-        get;
-        set
-        {
-            Accumulated = TimeSpan.Zero;
-            field = value;
-        }
-    }
-
-    public bool ShouldRedraw(TimeSpan delta)
-    {
-        if (Target == null)
-        {
-            // Uncapped FPS
-            return true;
-        }
-
-        Accumulated += delta;
-
-        if (Accumulated >= Target)
-        {
-            Accumulated = TimeSpan.Zero;
-            return true;
-        }
-
-        return false;
     }
 }
