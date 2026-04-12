@@ -84,18 +84,26 @@ public static class RenderContextExtensions
                 context.Viewport.Right - x,
                 maxWidth ?? context.Viewport.Right);
 
-            var graphemes = text.Graphemes()
-                .Select(c => (String: c, Width: c.GetCellWidth()))
-                .Where(c => c.Width > 0)
-                .TakeWhile((a) =>
-                {
-                    remainingWidth -= a.Width;
-                    return remainingWidth >= 0;
-                });
-
-            foreach (var (symbol, width) in graphemes)
+            foreach (var symbol in text.Graphemes())
             {
-                context.GetCell(x, y)?.SetSymbol(symbol).SetStyle(style);
+                var width = symbol.GetCellWidth();
+
+                // Skip zero-width characters
+                if (width == 0)
+                {
+                    continue;
+                }
+
+                // Stop when no more horizontal space is available
+                remainingWidth -= width;
+                if (remainingWidth < 0)
+                {
+                    break;
+                }
+
+                context.GetCell(x, y)?
+                    .SetSymbol(symbol)
+                    .SetStyle(style);
 
                 var nextSymbolPosition = x + width;
                 x++;

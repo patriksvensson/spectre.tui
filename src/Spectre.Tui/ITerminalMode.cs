@@ -78,10 +78,7 @@ public sealed class InlineMode : ITerminalMode
     public void OnAttach(AnsiWriter writer)
     {
         // Reserve scrollback space
-        for (var i = 0; i < Height; i++)
-        {
-            writer.Write("\n");
-        }
+        writer.Write(new string('\n', Height));
 
         // Move back up
         writer.CursorUp(Height);

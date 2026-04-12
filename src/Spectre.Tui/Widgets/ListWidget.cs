@@ -6,11 +6,21 @@ public sealed class ListWidget<TItem> : IWidget
 {
     private int _offset;
     private int? _selectedIndex;
+    private int _highlightSymbolWidth;
 
     public List<TItem> Items { get; }
-    public TextLine? HighlightSymbol { get; set; }
     public Style? HighlightStyle { get; set; }
     public bool WrapAround { get; set; }
+
+    public TextLine? HighlightSymbol
+    {
+        get;
+        set
+        {
+            field = value;
+            _highlightSymbolWidth = field?.GetWidth() ?? 0;
+        }
+    }
 
     public TItem? SelectedItem => GetSelectedItem();
     public int? SelectedIndex
@@ -69,7 +79,6 @@ public sealed class ListWidget<TItem> : IWidget
 
         // Symbols
         var highlightSymbol = HighlightSymbol ?? null;
-        var highlightSymbolWidth = highlightSymbol?.GetWidth() ?? 0;
 
         // Iterate the items (skip / take)
         var currentHeight = 0;
@@ -88,9 +97,9 @@ public sealed class ListWidget<TItem> : IWidget
             // Calculate the item area
             var itemArea = highlightSymbol != null
                 ? new Rectangle(
-                    x: rowArea.X + highlightSymbolWidth,
+                    x: rowArea.X + _highlightSymbolWidth,
                     y: rowArea.Y,
-                    width: (rowArea.Width - highlightSymbolWidth).EnsurePositive(),
+                    width: (rowArea.Width - _highlightSymbolWidth).EnsurePositive(),
                     height: rowArea.Height)
                 : rowArea;
 
@@ -108,7 +117,7 @@ public sealed class ListWidget<TItem> : IWidget
             // Render chevron?
             if (highlightSymbol != null && isSelected)
             {
-                context.SetLine(x, y, highlightSymbol, highlightSymbolWidth);
+                context.SetLine(x, y, highlightSymbol, _highlightSymbolWidth);
             }
         }
     }

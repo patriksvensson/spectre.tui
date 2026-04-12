@@ -9,9 +9,15 @@ internal interface IRatioResolvable
 
 internal static class RatioResolver
 {
-    public static List<int> Resolve(int total, IReadOnlyList<IRatioResolvable> edges)
+    public static IEnumerable<int> Resolve(int total, IReadOnlyList<IRatioResolvable> edges)
     {
         var sizes = edges.Select(GetEdgeWidth).ToArray();
+
+        // If all edges have a size, we can skip the convergence loop below
+        if (Array.TrueForAll(sizes, s => s != null))
+        {
+            return sizes.Select(x => x!.Value);
+        }
 
         while (sizes.Any(s => s == null))
         {
@@ -27,7 +33,7 @@ internal static class RatioResolver
             var remaining = total - sizes.Sum(size => size ?? 0);
             if (remaining <= 0)
             {
-                // No more room for flexible edges.
+                // No more room for flexible edges
                 return sizes
                     .Zip(edges, (size, edge) => (Size: size, Edge: edge))
                     .Select(zip => zip.Size ?? zip.Edge.MinimumSize)
