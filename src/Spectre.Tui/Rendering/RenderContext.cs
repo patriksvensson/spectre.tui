@@ -243,11 +243,34 @@ public static class RenderContextExtensions
 
         public void Blit(int x, int y, RenderSurface surface)
         {
-            foreach (var (sourcePosition, source) in surface.GetCells())
+            foreach (var (position, cell) in surface.GetCells())
             {
-                context.GetCell(x + sourcePosition.X, y + sourcePosition.Y)?
-                    .SetSymbol(source.Symbol)
-                    .SetStyle(source.Style);
+                if (cell.Symbol.Length == 0)
+                {
+                    continue;
+                }
+
+                var destinationX = x + position.X;
+                var destinationY = y + position.Y;
+                var symbolWidth = cell.Symbol.GetCellWidth();
+
+                if (destinationX < 0 || destinationY < 0 ||
+                    destinationX + symbolWidth > context.Viewport.Width ||
+                    destinationY >= context.Viewport.Height)
+                {
+                    continue;
+                }
+
+                context.GetCell(destinationX, destinationY)?
+                    .SetSymbol(cell.Symbol)
+                    .SetStyle(cell.Style);
+
+                // Write continuation cells for wide symbols
+                for (var i = 1; i < symbolWidth; i++)
+                {
+                    context.GetCell(destinationX + i, destinationY)
+                        ?.SetSymbol("");
+                }
             }
         }
 

@@ -21,24 +21,21 @@ public static class Program
         };
 
         var ball = new BallState();
-        var todo = new ListWidget<ToDoItem>(
-            [
-                new ToDoItem("नमस्ते [red]Happy Holidays[/] 🎅 Happy Holidays: [u]Happy Holidays[/]"),
-                new ToDoItem("Another list item"),
-                new ToDoItem("An [italic]initially[/] completed list item", true),
-                new ToDoItem("A list item "),
-                new ToDoItem("Another list item "),
-                new ToDoItem("Believe it or not, a list item"),
-                new ToDoItem("A list item (wow)"),
-                new ToDoItem("A list item... you know"),
-                new ToDoItem("A list item "),
-                new ToDoItem("Another list item "),
-                new ToDoItem("Believe it or not, a list item"),
-                new ToDoItem("A list item (wow)")
-            ])
-            .HighlightSymbol("→ ")
-            .WrapAround()
-            .SelectedIndex(0);
+        var todo = new TodoWidget(
+        [
+            new ToDoItem("नमस्ते [red]Happy Holidays[/] 🎅 Happy Holidays: [u]Happy Holidays[/]"),
+            new ToDoItem("Another list item"),
+            new ToDoItem("An [italic]initially[/] completed list item", true),
+            new ToDoItem("A list item "),
+            new ToDoItem("Another list item "),
+            new ToDoItem("Believe it or not, a list item"),
+            new ToDoItem("A list item (wow)"),
+            new ToDoItem("A list item... you know"),
+            new ToDoItem("A list item "),
+            new ToDoItem("Another list item "),
+            new ToDoItem("Believe it or not, a list item"),
+            new ToDoItem("A list item (wow)")
+        ]);
 
         while (running)
         {
@@ -103,7 +100,7 @@ public static class Program
                         todo.MoveUp();
                         break;
                     case ConsoleKey.Spacebar:
-                        todo.SelectedItem?.Toggle();
+                        todo.Toggle();
                         break;
                 }
             }

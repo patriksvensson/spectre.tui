@@ -1,0 +1,41 @@
+namespace Sandbox;
+
+/// <summary>
+/// A custom widget that wraps a list in a JustInTimeWidget so that
+/// we're only recalculating stuff if something changes.
+/// </summary>
+public sealed class TodoWidget : JustInTimeWidget
+{
+    private readonly ListWidget<ToDoItem> _widget;
+
+    public TodoWidget(List<ToDoItem> items)
+    {
+        _widget = new ListWidget<ToDoItem>(items)
+            .HighlightSymbol("→ ")
+            .WrapAround()
+            .SelectedIndex(0);
+    }
+
+    public void MoveUp()
+    {
+        _widget.MoveUp();
+        MarkAsDirty();
+    }
+
+    public void MoveDown()
+    {
+        _widget.MoveDown();
+        MarkAsDirty();
+    }
+
+    public void Toggle()
+    {
+        _widget.SelectedItem?.Toggle();
+        MarkAsDirty();
+    }
+
+    protected override void RenderDirty(RenderContext context)
+    {
+        context.Render(_widget);
+    }
+}
