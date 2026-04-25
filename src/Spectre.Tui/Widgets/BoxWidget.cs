@@ -3,7 +3,9 @@ namespace Spectre.Tui;
 [PublicAPI]
 public sealed class BoxWidget(Style? style = null) : IWidget
 {
+    public Style? Style { get; set; }
     public Border Border { get; set; } = Border.Rounded;
+    public IWidget? Inner { get; set; }
 
     public void Render(RenderContext context)
     {
@@ -70,6 +72,36 @@ public sealed class BoxWidget(Style? style = null) : IWidget
             context.SetStyle(0, y, style);
             context.SetSymbol(area.Width - 1, y, Border.VerticalRight);
             context.SetStyle(area.Width - 1, y, style);
+        }
+
+        if (Inner != null)
+        {
+            context.Render(Inner, context.Viewport.Inflate(-1, -1));
+        }
+    }
+}
+
+[PublicAPI]
+public static class BoxWidgetExtensions
+{
+    extension(BoxWidget widget)
+    {
+        public BoxWidget WithStyle(Style? style)
+        {
+            widget.Style = style;
+            return widget;
+        }
+
+        public BoxWidget WithBorder(Border border)
+        {
+            widget.Border = border;
+            return widget;
+        }
+
+        public BoxWidget WithInnerWidget(IWidget inner)
+        {
+            widget.Inner = inner;
+            return widget;
         }
     }
 }

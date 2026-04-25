@@ -68,20 +68,20 @@ public static class Program
                 ctx.Render(new BallWidget(), ball);
 
                 // Inner box
-                var inner = middle.Inflate(new Size(-12, -5));
-                ctx.Render(new BoxWidget(Color.Green)
-                {
-                    Border = Border.McGuganTall,
-                }, inner);
                 ctx.Render(
-                    new ClearWidget(' ', new Style(decoration: Decoration.Bold)),
-                    inner.Inflate(-1, -1));
-
-                // To-Do list
-                ctx.Render(todo, inner.Inflate(-2, -2));
+                    new BoxWidget()
+                        .WithStyle(Color.Green)
+                        .WithBorder(Border.McGuganTall)
+                        .WithInnerWidget(
+                            new CompositeWidget(
+                                new ClearWidget(' ', new Style(decoration: Decoration.Bold)),
+                                new PaddingWidget(new Size(-1, 0), todo))),
+                    middle.Inflate(new Size(-12, -5)));
 
                 // Help
-                ctx.Render(Text.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select", new Style(Color.Gray)), bottom);
+                ctx.Render(
+                    Paragraph.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select",
+                        new Style(Color.Gray)).Centered(), bottom);
             });
 
             // Handle input
