@@ -50,6 +50,16 @@ public sealed class ParagraphTests
             // Then
             paragraph.Alignment.ShouldBe(Justify.Left);
         }
+
+        [Fact]
+        public void Should_Default_To_Top_Vertical_Alignment()
+        {
+            // Given, When
+            var paragraph = new Paragraph();
+
+            // Then
+            paragraph.VerticalAlignment.ShouldBe(VerticalAlignment.Top);
+        }
     }
 
     public sealed class TheGetWidthMethod
@@ -243,6 +253,253 @@ public sealed class ParagraphTests
         }
     }
 
+    public sealed class TheVerticalAlignmentProperty
+    {
+        [Fact]
+        public void Should_Top_Align_By_Default()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 3));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("hi"));
+
+            // Then
+            result.ShouldBe(
+                """
+                hi•••
+                •••••
+                •••••
+                """);
+        }
+
+        [Fact]
+        public void Should_Middle_Align_When_Vertical_Alignment_Is_Middle()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 3));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("hi")
+                    .AlignedMiddle());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                hi•••
+                •••••
+                """);
+        }
+
+        [Fact]
+        public void Should_Bottom_Align_When_Vertical_Alignment_Is_Bottom()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 3));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("hi")
+                    .AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                •••••
+                hi•••
+                """);
+        }
+
+        [Fact]
+        public void Should_Floor_Middle_Offset_With_Even_Slack()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 4));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("hi")
+                    .AlignedMiddle());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                hi•••
+                •••••
+                •••••
+                """);
+        }
+
+        [Fact]
+        public void Should_Middle_Align_Multiple_Lines()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 5));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("a\nb\nc")
+                    .AlignedMiddle());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                a••••
+                b••••
+                c••••
+                •••••
+                """);
+        }
+
+        [Fact]
+        public void Should_Bottom_Align_Multiple_Lines()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 5));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("a\nb\nc")
+                    .AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                •••••
+                a••••
+                b••••
+                c••••
+                """);
+        }
+
+        [Fact]
+        public void Should_Drop_Top_Lines_When_Bottom_Aligned_Overflows()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(3, 2));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("aa bb cc dd")
+                    .AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                cc•
+                dd•
+                """);
+        }
+
+        [Fact]
+        public void Should_Not_Offset_When_Content_Equals_Viewport_Height()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(3, 2));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("aa\nbb")
+                    .AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                aa•
+                bb•
+                """);
+        }
+
+        [Fact]
+        public void Should_Combine_Horizontal_And_Vertical_Alignment()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(6, 3));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("hi")
+                    .Centered()
+                    .AlignedMiddle());
+
+            // Then
+            result.ShouldBe(
+                """
+                ••••••
+                ••hi••
+                ••••••
+                """);
+        }
+
+        [Fact]
+        public void Should_Bottom_Align_With_Crop_Overflow()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 3));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("hi")
+                    .Cropped()
+                    .AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                •••••
+                hi•••
+                """);
+        }
+
+        [Fact]
+        public void Should_Bottom_Align_With_Ellipsis_Overflow()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 3));
+
+            // When
+            var result = fixture.Render(
+                Paragraph.FromString("Hello wonderful world")
+                    .Ellipsis()
+                    .AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                •••••
+                Hell…
+                """);
+        }
+
+        [Fact]
+        public void Should_Render_Nothing_When_Lines_Empty()
+        {
+            // Given
+            var fixture = new TuiFixture(new Size(5, 3));
+
+            // When
+            var result = fixture.Render(
+                new Paragraph().AlignedBottom());
+
+            // Then
+            result.ShouldBe(
+                """
+                •••••
+                •••••
+                •••••
+                """);
+        }
+    }
+
     public sealed class TheOverflowProperty
     {
         [Fact]
@@ -418,6 +675,64 @@ public sealed class ParagraphTests
             // Then
             result.ShouldContain("\e[38;5;11maaa");
             result.ShouldContain("\e[38;5;11mbbb");
+        }
+    }
+
+    public sealed class TheStyleProperty
+    {
+        [Fact]
+        public void Should_Apply_Paragraph_Style_To_Unstyled_Text()
+        {
+            // Given
+            var fixture = new TuiFixture(new AnsiTestTerminal());
+
+            // When
+            var result = fixture.Render(ctx =>
+            {
+                ctx.Render(
+                    Paragraph.FromMarkup("Hello")
+                        .Style(new Style(Color.Yellow)));
+            });
+
+            // Then
+            result.ShouldContain("\e[38;5;11mHello");
+        }
+
+        [Fact]
+        public void Should_Let_Span_Style_Override_Paragraph_Style()
+        {
+            // Given
+            var fixture = new TuiFixture(new AnsiTestTerminal());
+
+            // When
+            var result = fixture.Render(ctx =>
+            {
+                ctx.Render(
+                    Paragraph.FromMarkup("[red]Hello[/]")
+                        .Style(new Style(Color.Yellow)));
+            });
+
+            // Then
+            result.ShouldContain("\e[38;5;9mHello");
+        }
+
+        [Fact]
+        public void Should_Combine_Paragraph_Style_Decoration_With_Span_Style()
+        {
+            // Given
+            var fixture = new TuiFixture(new AnsiTestTerminal());
+
+            // When
+            var result = fixture.Render(ctx =>
+            {
+                ctx.Render(
+                    Paragraph.FromMarkup("[red]Hello[/]")
+                        .Style(new Style(decoration: Decoration.Bold)));
+            });
+
+            // Then
+            result.ShouldContain("\e[1m");
+            result.ShouldContain("\e[38;5;9mHello");
         }
     }
 }

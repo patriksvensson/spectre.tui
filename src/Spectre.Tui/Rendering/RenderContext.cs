@@ -120,13 +120,15 @@ public static class RenderContextExtensions
             return new Position(x, y);
         }
 
-        public Position SetLine(Position position, TextLine line, int maxWidth)
+        public Position SetLine(Position position, TextLine line, int maxWidth, Style? baseStyle = null)
         {
-            return context.SetLine(position.X, position.Y, line, maxWidth);
+            return context.SetLine(position.X, position.Y, line, maxWidth, baseStyle);
         }
 
-        public Position SetLine(int x, int y, TextLine line, int maxWidth)
+        public Position SetLine(int x, int y, TextLine line, int maxWidth, Style? baseStyle = null)
         {
+            var lineBaseStyle = baseStyle?.Combine(line.Style) ?? line.Style;
+
             var remainingWidth = maxWidth;
             foreach (var span in line.Spans)
             {
@@ -138,7 +140,7 @@ public static class RenderContextExtensions
                 var pos = context.SetString(
                     x, y,
                     span.Text,
-                    line.Style?.Combine(span.Style) ?? span.Style,
+                    lineBaseStyle?.Combine(span.Style) ?? span.Style,
                     remainingWidth);
 
                 var w = pos.X - x;

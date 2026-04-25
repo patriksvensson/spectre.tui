@@ -5,6 +5,7 @@ public sealed record Paragraph : IWidget
 {
     public Style? Style { get; set; }
     public Justify Alignment { get; set; } = Justify.Left;
+    public VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Top;
     public Overflow Overflow { get; set; } = Overflow.Fold;
     public List<TextLine> Lines { get; } = [];
 
@@ -97,14 +98,41 @@ public sealed record Paragraph : IWidget
             return;
         }
 
-        var y = 0;
-        foreach (var line in EnumerateLines(maxWidth))
+        var lines = EnumerateLines(maxWidth).ToList();
+        if (lines.Count == 0)
+        {
+            return;
+        }
+
+        int offsetY;
+        int startIndex;
+        if (lines.Count <= height)
+        {
+            startIndex = 0;
+            offsetY = VerticalAlignment switch
+            {
+                VerticalAlignment.Middle => (height - lines.Count) / 2,
+                VerticalAlignment.Bottom => height - lines.Count,
+                _ => 0,
+            };
+        }
+        else
+        {
+            offsetY = 0;
+            startIndex = VerticalAlignment == VerticalAlignment.Bottom
+                ? lines.Count - height
+                : 0;
+        }
+
+        var y = offsetY;
+        for (var i = startIndex; i < lines.Count; i++)
         {
             if (y >= height)
             {
                 return;
             }
 
+            var line = lines[i];
             var lineWidth = Math.Min(line.GetWidth(), maxWidth);
             var x = Alignment switch
             {
@@ -113,7 +141,7 @@ public sealed record Paragraph : IWidget
                 _ => 0,
             };
 
-            context.SetLine(x, y, line, maxWidth - x);
+            context.SetLine(x, y, line, maxWidth - x, Style);
             y++;
         }
     }
@@ -195,6 +223,27 @@ public static class ParagraphExtensions
         public Paragraph RightAligned()
         {
             return paragraph.Alignment(Justify.Right);
+        }
+
+        public Paragraph VerticalAlignment(VerticalAlignment alignment)
+        {
+            paragraph.VerticalAlignment = alignment;
+            return paragraph;
+        }
+
+        public Paragraph AlignedTop()
+        {
+            return paragraph.VerticalAlignment(Tui.VerticalAlignment.Top);
+        }
+
+        public Paragraph AlignedMiddle()
+        {
+            return paragraph.VerticalAlignment(Tui.VerticalAlignment.Middle);
+        }
+
+        public Paragraph AlignedBottom()
+        {
+            return paragraph.VerticalAlignment(Tui.VerticalAlignment.Bottom);
         }
 
         public Paragraph Overflow(Overflow overflow)
