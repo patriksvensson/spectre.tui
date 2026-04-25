@@ -10,9 +10,14 @@ public sealed class RenderSurface
 
     public void Render(Action<RenderContext> render)
     {
+        Render(render, new Size(short.MaxValue, short.MaxValue));
+    }
+
+    public void Render(Action<RenderContext> render, Size size)
+    {
         _buffer.Clear();
 
-        render(new RenderContext(_buffer, new Rectangle(0, 0, short.MaxValue, short.MaxValue)));
+        render(new RenderContext(_buffer, new Rectangle(0, 0, size.Width, size.Height)));
 
         var width = 0;
         var height = 0;

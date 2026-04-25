@@ -22,7 +22,7 @@ public abstract class JustInTimeWidget : IWidget
 
         if (_dirty)
         {
-            _surface.Render(RenderDirty);
+            _surface.Render(RenderDirty, new Size(context.Viewport.Width, context.Viewport.Height));
             _dirty = false;
         }
 
