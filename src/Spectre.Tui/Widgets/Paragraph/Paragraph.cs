@@ -170,13 +170,13 @@ public static class ParagraphExtensions
 
     extension(Paragraph paragraph)
     {
-        public Paragraph WithStyle(Style? style)
+        public Paragraph Style(Style? style)
         {
             paragraph.Style = style;
             return paragraph;
         }
 
-        public Paragraph WithAlignment(Justify alignment)
+        public Paragraph Alignment(Justify alignment)
         {
             paragraph.Alignment = alignment;
             return paragraph;
@@ -184,20 +184,20 @@ public static class ParagraphExtensions
 
         public Paragraph LeftAligned()
         {
-            return paragraph.WithAlignment(Justify.Left);
+            return paragraph.Alignment(Justify.Left);
         }
 
         public Paragraph Centered()
         {
-            return paragraph.WithAlignment(Justify.Center);
+            return paragraph.Alignment(Justify.Center);
         }
 
         public Paragraph RightAligned()
         {
-            return paragraph.WithAlignment(Justify.Right);
+            return paragraph.Alignment(Justify.Right);
         }
 
-        public Paragraph WithOverflow(Overflow overflow)
+        public Paragraph Overflow(Overflow overflow)
         {
             paragraph.Overflow = overflow;
             return paragraph;
@@ -205,19 +205,19 @@ public static class ParagraphExtensions
 
         public Paragraph Cropped()
         {
-            paragraph.Overflow = Overflow.Crop;
+            paragraph.Overflow = Tui.Overflow.Crop;
             return paragraph;
         }
 
         public Paragraph Ellipsis()
         {
-            paragraph.Overflow = Overflow.Ellipsis;
+            paragraph.Overflow = Tui.Overflow.Ellipsis;
             return paragraph;
         }
 
         public Paragraph Folded()
         {
-            paragraph.Overflow = Overflow.Fold;
+            paragraph.Overflow = Tui.Overflow.Fold;
             return paragraph;
         }
     }

@@ -207,7 +207,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("hi")
-                    .WithAlignment(Justify.Center));
+                    .Alignment(Justify.Center));
 
             // Then
             result.ShouldBe("••••hi••••");
@@ -222,7 +222,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("hi")
-                    .WithAlignment(Justify.Right));
+                    .Alignment(Justify.Right));
 
             // Then
             result.ShouldBe("••••••••hi");
@@ -264,7 +264,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("Hello wonderful world")
-                    .WithOverflow(Overflow.Crop));
+                    .Overflow(Overflow.Crop));
 
             // Then
             result.ShouldBe("Hello");
@@ -279,7 +279,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("aa bb\ncc dd ee\nff")
-                    .WithOverflow(Overflow.Crop));
+                    .Overflow(Overflow.Crop));
 
             // Then
             result.ShouldBe(
@@ -299,7 +299,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("Hello wonderful world")
-                    .WithOverflow(Overflow.Ellipsis));
+                    .Overflow(Overflow.Ellipsis));
 
             // Then
             result.ShouldBe("Hello•w…");
@@ -314,7 +314,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("hi")
-                    .WithOverflow(Overflow.Ellipsis));
+                    .Overflow(Overflow.Ellipsis));
 
             // Then
             result.ShouldBe("hi••••••••");
@@ -329,7 +329,7 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("Hello")
-                    .WithOverflow(Overflow.Ellipsis));
+                    .Overflow(Overflow.Ellipsis));
 
             // Then
             result.ShouldBe("…");
@@ -340,7 +340,7 @@ public sealed class ParagraphTests
         {
             // Given
             var paragraph = Paragraph.FromString("Hello wonderful world")
-                .WithOverflow(Overflow.Crop);
+                .Overflow(Overflow.Crop);
 
             // When
             var result = paragraph.GetWrappedHeight(5);
@@ -354,7 +354,7 @@ public sealed class ParagraphTests
         {
             // Given
             var paragraph = Paragraph.FromString("a\nb\nc")
-                .WithOverflow(Overflow.Ellipsis);
+                .Overflow(Overflow.Ellipsis);
 
             // When
             var result = paragraph.GetWrappedHeight(1);
@@ -372,8 +372,8 @@ public sealed class ParagraphTests
             // When
             var result = fixture.Render(
                 Paragraph.FromString("hi")
-                    .WithOverflow(Overflow.Crop)
-                    .WithAlignment(Justify.Right));
+                    .Overflow(Overflow.Crop)
+                    .Alignment(Justify.Right));
 
             // Then
             result.ShouldBe("••••••••hi");

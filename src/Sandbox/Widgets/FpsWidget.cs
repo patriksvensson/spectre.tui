@@ -15,7 +15,7 @@ public sealed class FpsWidget : IWidget
             {
                 Foreground = foreground ?? Color.Default,
                 Background = background ?? Color.Default,
-            }).WithAlignment(Justify.Center);
+            }).Alignment(Justify.Center);
     }
 
     public void Render(RenderContext context)

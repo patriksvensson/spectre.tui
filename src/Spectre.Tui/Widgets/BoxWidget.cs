@@ -86,19 +86,19 @@ public static class BoxWidgetExtensions
 {
     extension(BoxWidget widget)
     {
-        public BoxWidget WithStyle(Style? style)
+        public BoxWidget Style(Style? style)
         {
             widget.Style = style;
             return widget;
         }
 
-        public BoxWidget WithBorder(Border border)
+        public BoxWidget Border(Border border)
         {
             widget.Border = border;
             return widget;
         }
 
-        public BoxWidget WithInnerWidget(IWidget inner)
+        public BoxWidget Inner(IWidget inner)
         {
             widget.Inner = inner;
             return widget;

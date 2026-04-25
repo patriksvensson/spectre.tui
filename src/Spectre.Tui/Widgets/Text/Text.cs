@@ -133,7 +133,7 @@ public static class TextExtensions
 
     extension(Text text)
     {
-        public Text WithStyle(Style? style)
+        public Text Style(Style? style)
         {
             text.Style = style;
             return text;

@@ -79,9 +79,9 @@ public static class Program
                 // Inner box
                 ctx.Render(
                     new BoxWidget()
-                        .WithStyle(Color.Green)
-                        .WithBorder(Border.McGuganTall)
-                        .WithInnerWidget(
+                        .Style(Color.Green)
+                        .Border(Border.McGuganTall)
+                        .Inner(
                             new CompositeWidget(
                                 new ClearWidget(' ', new Style(decoration: Decoration.Bold)),
                                 new PaddingWidget(new Size(-1, 0), todo))),
@@ -89,8 +89,9 @@ public static class Program
 
                 // Help
                 ctx.Render(
-                    Paragraph.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select",
-                        new Style(Color.Gray)).Centered(), bottom);
+                    Paragraph.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select")
+                        .Style(new Style(Color.Gray))
+                        .Centered(), bottom);
 
                 ctx.Render(spinner, bottomRight);
             });

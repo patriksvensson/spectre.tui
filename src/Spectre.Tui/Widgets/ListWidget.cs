@@ -238,7 +238,7 @@ public static class ListWidgetExtensions
     extension<TItem>(ListWidget<TItem> widget)
         where TItem : IListWidgetItem
     {
-        public ListWidget<TItem> WithItems(params IEnumerable<TItem> items)
+        public ListWidget<TItem> Items(params IEnumerable<TItem> items)
         {
             widget.Items.Clear();
             widget.Items.AddRange(items);
