@@ -21,6 +21,7 @@ public static class Program
         };
 
         var ball = new BallState();
+        var spinner = new SpinnerWidget().Kind(SpinnerKind.Dots);
         var todo = new TodoWidget(
         [
             new ToDoItem("नमस्ते [red]Happy Holidays[/] 🎅 Happy Holidays: [u]Happy Holidays[/]"),
@@ -37,19 +38,27 @@ public static class Program
             new ToDoItem("A list item (wow)")
         ]);
 
+        var layout = new Layout("Root")
+            .SplitRows(
+                new Layout("Top").Size(1),
+                new Layout("Middle"),
+                new Layout("Bottom")
+                    .Size(1)
+                    .SplitColumns(
+                        new Layout("BottomLeft"),
+                        new Layout("BottomRight").Size(1)));
+
         while (running)
         {
             renderer.Draw((ctx, info) =>
             {
-                var layout = new Layout("Root")
-                    .SplitRows(
-                        new Layout("Top").Size(1),
-                        new Layout("Middle"),
-                        new Layout("Bottom").Size(1));
+                // Perform frame dependent updates
+                spinner.Update(info);
 
                 var top = layout.GetArea(ctx, "Top");
                 var middle = layout.GetArea(ctx, "Middle");
-                var bottom = layout.GetArea(ctx, "Bottom");
+                var bottom = layout.GetArea(ctx, "BottomLeft");
+                var bottomRight = layout.GetArea(ctx, "BottomRight");
 
                 // FPS
                 ctx.Render(
@@ -82,6 +91,8 @@ public static class Program
                 ctx.Render(
                     Paragraph.FromMarkup("[bold][[Q]][/]:Quit  [bold][[↑↓]][/]:Move  [bold][[Space]][/]:Select",
                         new Style(Color.Gray)).Centered(), bottom);
+
+                ctx.Render(spinner, bottomRight);
             });
 
             // Handle input
