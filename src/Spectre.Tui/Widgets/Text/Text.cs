@@ -130,4 +130,13 @@ public static class TextExtensions
             return result;
         }
     }
+
+    extension(Text text)
+    {
+        public Text WithStyle(Style? style)
+        {
+            text.Style = style;
+            return text;
+        }
+    }
 }
