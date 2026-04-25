@@ -102,8 +102,13 @@ public sealed class Layout : IRatioResolvable
 
     public Rectangle GetArea(RenderContext ctx, string name)
     {
+        return GetArea(ctx.Viewport, name);
+    }
+
+    public Rectangle GetArea(Rectangle area, string name)
+    {
         var stack = new Stack<(Layout Layout, Rectangle Region)>();
-        stack.Push((this, ctx.Viewport));
+        stack.Push((this, area));
 
         while (stack.Count > 0)
         {
