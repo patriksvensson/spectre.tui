@@ -243,6 +243,21 @@ public static class RenderContextExtensions
 
         public void Blit(int x, int y, RenderSurface surface)
         {
+            context.Blit(x, y, surface, new Rectangle(0, 0, surface.Width, surface.Height));
+        }
+
+        public void Blit(Position position, RenderSurface surface, Rectangle source)
+        {
+            context.Blit(position.X, position.Y, surface, source);
+        }
+
+        public void Blit(int x, int y, RenderSurface surface, Rectangle source)
+        {
+            if (source.IsEmpty)
+            {
+                return;
+            }
+
             foreach (var (position, cell) in surface.GetCells())
             {
                 if (cell.Symbol.Length == 0)
@@ -250,10 +265,20 @@ public static class RenderContextExtensions
                     continue;
                 }
 
-                var destinationX = x + position.X;
-                var destinationY = y + position.Y;
                 var symbolWidth = cell.Symbol.GetCellWidth();
 
+                // Clip against the source rectangle
+                if (position.X < source.X || position.Y < source.Y ||
+                    position.X + symbolWidth > source.Right ||
+                    position.Y >= source.Bottom)
+                {
+                    continue;
+                }
+
+                var destinationX = x + position.X - source.X;
+                var destinationY = y + position.Y - source.Y;
+
+                // Clip against the destination viewport
                 if (destinationX < 0 || destinationY < 0 ||
                     destinationX + symbolWidth > context.Viewport.Width ||
                     destinationY >= context.Viewport.Height)
