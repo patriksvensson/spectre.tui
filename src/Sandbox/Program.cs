@@ -81,6 +81,8 @@ public static class Program
                     new BoxWidget()
                         .Style(Color.Green)
                         .Border(Border.Rounded)
+                        .TitlePadding(1)
+                        .MarkupTitle("╢ [yellow]To-Do[/] ╟")
                         .Inner(
                             new CompositeWidget(
                                 new ClearWidget(' ', new Style(decoration: Decoration.Bold)),
