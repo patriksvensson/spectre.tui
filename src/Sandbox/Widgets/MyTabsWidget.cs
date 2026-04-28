@@ -18,7 +18,6 @@ public sealed class MyTabsWidget : JustInTimeWidget
     {
         _widget = new TabsWidget<Item>()
             .WrapAround()
-            .HighlightStyle(new Style(Color.Yellow, decoration: Decoration.Underline))
             .Items(titles.Select(title => new Item(title)))
             .SelectedIndex(0);
     }

@@ -7,9 +7,9 @@ public class TabsWidget<T> : IWidget
     private int _selectedIndex;
 
     public List<T> Items { get; }
-    public Style? HighlightStyle { get; set; }
+    public Style HighlightStyle { get; set; }
     public bool WrapAround { get; set; }
-    public TextSpan Separator { get; set; } = "|";
+    public TextSpan Separator { get; set; }
     public TextLine LeftPadding { get; set; } = " ";
     public TextLine RightPadding { get; set; } = " ";
 
@@ -40,6 +40,8 @@ public class TabsWidget<T> : IWidget
     public TabsWidget(params List<T> items)
     {
         Items = items ?? throw new ArgumentNullException(nameof(items));
+        HighlightStyle = new Style(decoration: Decoration.Invert);
+        Separator = new TextSpan("|", Color.Gray);
     }
 
     public void MoveLeft()
@@ -210,7 +212,7 @@ public static class TabsExtensions
             return widget;
         }
 
-        public TabsWidget<T> HighlightStyle(Style? style)
+        public TabsWidget<T> HighlightStyle(Style style)
         {
             widget.HighlightStyle = style;
             return widget;
