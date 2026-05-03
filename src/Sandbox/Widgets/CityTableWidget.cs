@@ -39,6 +39,7 @@ public sealed class CityTableWidget : JustInTimeWidget
 
     public int Position => _table.SelectedIndex ?? 0;
     public int Length => _table.Rows.Count;
+    public City? Selected => _table.SelectedItem;
 
     public CityTableWidget(IEnumerable<City> cities)
     {

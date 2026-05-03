@@ -4,6 +4,9 @@ public sealed class TodoTab : SandboxTab
 {
     private readonly TodoWidget _todo;
 
+    public override string TabLabel => "List";
+    public override string HelpMarkup => "[bold][[↑↓]][/]:Move  [bold][[SPACE]][/]:Toggle";
+
     public TodoTab()
     {
         _todo = new TodoWidget(
@@ -22,9 +25,6 @@ public sealed class TodoTab : SandboxTab
             new ToDoItem("A list item (wow)"),
         ]);
     }
-
-    public override string TabLabel => "List";
-    public override string HelpMarkup => "[bold][[↑↓]][/]:Move  [bold][[SPACE]][/]:Select";
 
     public override void OnMessage(ApplicationContext context, ApplicationMessage e)
     {

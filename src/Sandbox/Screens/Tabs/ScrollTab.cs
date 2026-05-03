@@ -4,6 +4,9 @@ public sealed class ScrollTab : SandboxTab
 {
     private readonly ScrollViewWidget _scroll;
 
+    public override string TabLabel => "Scroll";
+    public override string HelpMarkup => "[bold][[↑↓←→ PgUp PgDn Home End]][/]:Scroll";
+
     public ScrollTab()
     {
         _scroll = new ScrollViewWidget()
@@ -37,9 +40,6 @@ public sealed class ScrollTab : SandboxTab
             .ScrollbarStyle(Color.Gray)
             .ScrollbarThumbStyle(Color.Green);
     }
-
-    public override string TabLabel => "Scroll";
-    public override string HelpMarkup => "[bold][[↑↓←→ PgUp PgDn Home End]][/]:Scroll";
 
     public override void OnMessage(ApplicationContext context, ApplicationMessage evt)
     {

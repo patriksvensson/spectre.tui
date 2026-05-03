@@ -30,6 +30,7 @@ public sealed class TodoWidget : JustInTimeWidget
 
     public int Position => _widget.SelectedIndex ?? 0;
     public int Length => _widget.Items.Count;
+    public ToDoItem? Selected => _widget.SelectedItem;
 
     public TodoWidget(List<ToDoItem> items)
     {

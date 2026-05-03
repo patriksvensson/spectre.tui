@@ -4,6 +4,9 @@ public sealed class CitiesTab : SandboxTab
 {
     private readonly CityTableWidget _cities;
 
+    public override string TabLabel => "Table";
+    public override string HelpMarkup => "[bold][[↑↓]][/]:Move  [bold][[Enter]][/]:Info";
+
     public CitiesTab()
     {
         _cities = new CityTableWidget(
@@ -31,9 +34,6 @@ public sealed class CitiesTab : SandboxTab
         ]);
     }
 
-    public override string TabLabel => "Table";
-    public override string HelpMarkup => "[bold][[↑↓]][/]:Move";
-
     public override void OnMessage(ApplicationContext context, ApplicationMessage e)
     {
         if (e is not KeyMessage k)
@@ -45,6 +45,13 @@ public sealed class CitiesTab : SandboxTab
         {
             case ConsoleKey.UpArrow: _cities.MoveUp(); break;
             case ConsoleKey.DownArrow: _cities.MoveDown(); break;
+            case ConsoleKey.Enter:
+                if (_cities.Selected != null)
+                {
+                    context.Push(new Popup(new Size(40, 8), "City selected",
+                        new SelectionPopup($"{_cities.Selected.Name}")));
+                }
+                break;
         }
     }
 
